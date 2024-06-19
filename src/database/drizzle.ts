@@ -3,24 +3,25 @@
  * Please refer to the https://orm.drizzle.team/docs to see the list of supported database drivers and how to use them.
  */
 
-import { Logger } from '@astroneer/common';
+import { isDevMode, Logger } from '@astroneer/common';
 import { drizzle as drizzleORM } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-import { $dogs } from './schema/dogs.schema';
+import * as schema from './schema';
 
-const queryClient = postgres({
-  // Please replace the following with your database connection string or use the environment variable
+const queryClient = postgres(process.env.DATABASE_URL ?? '', {
+  connection: {
+    application_name: 'vape-store-api',
+    TimeZone: 'UTC',
+    DateStyle: 'ISO, MDY',
+  },
 });
 
-export const drizzle = drizzleORM(queryClient, {
+export const db = drizzleORM(queryClient, {
   logger: {
     logQuery(query, params) {
-      // This is useful for debugging purposes, will only log when using "astroneer dev"
-      process.env.NODE_ENV === 'development' &&
+      isDevMode() &&
         Logger.debug(`${query} ${JSON.stringify(params, null, 2)}`);
     },
   },
-  schema: {
-    dogs: $dogs,
-  },
+  schema,
 });

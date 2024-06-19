@@ -18,13 +18,7 @@ module.exports = defineConfig({
   out: 'drizzle',
   schema: 'src/database/schema',
   dbCredentials: {
-    /**
-     * You can define your database credentials here.
-     * Note that you can also use environment variables in a `.env` file.
-     *
-     * After defining your credentials and schemas, you can run the following command to generate your models:
-     * -  npx drizzle-kit push
-     */
+    url: process.env.DATABASE_URL,
   },
   verbose: true,
   strict: true,

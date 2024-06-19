@@ -19,3 +19,5 @@ overrides:
       - "plugin:prettier/recommended"
       - "plugin:astroneer/recommended"
       - "plugin:drizzle/recommended"
+    rules:
+      "@typescript-eslint/no-unused-vars": "off"

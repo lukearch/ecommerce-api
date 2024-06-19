@@ -14,4 +14,7 @@ module.exports = defineConfig({
   compiler: {
     type: 'swc',
   },
+  logger: {
+    httpErrors: false,
+  },
 });
