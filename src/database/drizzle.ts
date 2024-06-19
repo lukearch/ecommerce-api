@@ -10,7 +10,7 @@ import * as schema from './schema';
 
 const queryClient = postgres(process.env.DATABASE_URL ?? '', {
   connection: {
-    application_name: 'vape-store-api',
+    application_name: 'ecommerce-api',
     TimeZone: 'UTC',
     DateStyle: 'ISO, MDY',
   },
