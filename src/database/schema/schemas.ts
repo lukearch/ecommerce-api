@@ -15,18 +15,18 @@ import {
 export const customers = pgTable('customers', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
-  email: text('email'),
-  cpf: text('cpf'),
-  phone: text('phone'),
+  email: text('email').notNull().unique(),
+  cpf: text('cpf').notNull().unique(),
+  phone: text('phone').notNull(),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),
 });
 
 export const addresses = pgTable('addresses', {
   id: uuid('id').defaultRandom().primaryKey(),
-  customer_id: uuid('customer_id')
+  order_id: uuid('order_id')
     .notNull()
-    .references(() => customers.id),
+    .references(() => orders.id),
   street: text('street').notNull(),
   number: text('number').notNull(),
   neighborhood: text('neighborhood').notNull(),
@@ -55,7 +55,7 @@ export const products = pgTable('products', {
   dx: real('dx').notNull(),
   dy: real('dy').notNull(),
   dz: real('dz').notNull(),
-  specifications: jsonb('specifications'),
+  metadata: jsonb('metadata'),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at')
     .$onUpdate(() => new Date())
@@ -126,7 +126,6 @@ export const productsToOrders = pgTable(
       .notNull()
       .references(() => orders.id),
     quantity: integer('quantity').notNull(),
-    coupom_id: uuid('coupom_id').references(() => coupoms.id),
   },
   (t) => ({
     pk: primaryKey({

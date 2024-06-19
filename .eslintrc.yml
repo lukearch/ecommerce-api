@@ -5,19 +5,19 @@ parserOptions:
   ecmaVersion: latest
   sourceType: module
 overrides:
-  - files: "*.ts"
-    parser: "@typescript-eslint/parser"
+  - files: '*.ts'
+    parser: '@typescript-eslint/parser'
     parserOptions:
-      project: "./tsconfig.json"
+      project: './tsconfig.json'
     plugins:
-      - "@typescript-eslint"
-      - "prettier"
-      - "astroneer"
-      - "drizzle"
+      - '@typescript-eslint'
+      - 'prettier'
+      - 'astroneer'
+      - 'drizzle'
     extends:
-      - "plugin:@typescript-eslint/recommended"
-      - "plugin:prettier/recommended"
-      - "plugin:astroneer/recommended"
-      - "plugin:drizzle/recommended"
+      - 'plugin:@typescript-eslint/recommended'
+      - 'plugin:prettier/recommended'
+      - 'plugin:astroneer/recommended'
+      - 'plugin:drizzle/recommended'
     rules:
-      "@typescript-eslint/no-unused-vars": "off"
+      '@typescript-eslint/no-unused-vars': 'off'

@@ -3,7 +3,6 @@ import {
   addresses,
   avaliations,
   categories,
-  coupoms,
   customers,
   movements,
   orders,
@@ -12,20 +11,19 @@ import {
   productsToOrders,
 } from './schemas';
 
-export const customersRelations = relations(customers, ({ one, many }) => ({
-  address: one(addresses),
+export const customersRelations = relations(customers, ({ many }) => ({
   orders: many(orders),
 }));
 
 export const productsRelations = relations(products, ({ many }) => ({
   avaliations: many(avaliations),
-  productsToOrders: many(productsToOrders),
   movements: many(movements),
-  categories: many(categories),
+  productsToOrders: many(productsToOrders),
+  productsToCategories: many(productsToCategories),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
-  products: many(products),
+  productsToCategories: many(productsToCategories),
 }));
 
 export const avaliationsRelations = relations(avaliations, ({ one }) => ({
@@ -35,11 +33,19 @@ export const avaliationsRelations = relations(avaliations, ({ one }) => ({
   }),
 }));
 
+export const addressRelations = relations(addresses, ({ one }) => ({
+  order: one(orders, {
+    fields: [addresses.order_id],
+    references: [orders.id],
+  }),
+}));
+
 export const ordersRelations = relations(orders, ({ one, many }) => ({
   customer: one(customers, {
     fields: [orders.customer_id],
     references: [customers.id],
   }),
+  address: one(addresses),
   productsToOrders: many(productsToOrders),
 }));
 
@@ -67,10 +73,6 @@ export const productsToOrdersRelations = relations(
     order: one(orders, {
       fields: [productsToOrders.order_id],
       references: [orders.id],
-    }),
-    coupom: one(coupoms, {
-      fields: [productsToOrders.coupom_id],
-      references: [coupoms.id],
     }),
   }),
 );

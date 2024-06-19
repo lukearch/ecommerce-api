@@ -1,9 +1,6 @@
 import { db } from '@/database/drizzle';
 import { products } from '@/database/schema';
-import {
-  InsertProductInput,
-  insertProductSchema,
-} from '@/database/validation/schemas';
+import { InsertProductInput, insertProductSchema } from '@/validation/product';
 import { RouteHandler } from '@astroneer/core';
 import { withBodyValidation } from '@astroneer/validation';
 
