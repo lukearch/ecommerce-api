@@ -20,7 +20,9 @@ export const db = drizzleORM(queryClient, {
   logger: {
     logQuery(query, params) {
       isDevMode() &&
-        Logger.debug(`${query} ${JSON.stringify(params, null, 2)}`);
+        Logger.debug(
+          `${query}${params && `. Values ${JSON.stringify(params, null, 2)}`}`,
+        );
     },
   },
   schema,
