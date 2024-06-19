@@ -1,48 +1,37 @@
-import { RouteHandler } from '@astroneer/core';
-import { HttpError } from '@astroneer/common';
-import { updateProductSchema } from '@/database/validation/schemas';
-import { parseZodError } from '@/helpers/parse-zod-error';
 import { db } from '@/database/drizzle';
 import { products } from '@/database/schema';
+import {
+  UpdateProductInput,
+  updateProductSchema,
+} from '@/database/validation/schemas';
+import { HttpError } from '@astroneer/common';
+import { RouteHandler } from '@astroneer/core';
+import { withBodyValidation } from '@astroneer/validation';
 import { eq } from 'drizzle-orm';
 
-export const PUT: RouteHandler = async (req, res) => {
-  const body = await req.body();
-  const { id } = req.params;
+export const PUT: RouteHandler = withBodyValidation(
+  updateProductSchema,
+  async (req, res) => {
+    const body = await req.body<UpdateProductInput>();
+    const { id } = req.params;
 
-  if (!body) {
-    throw new HttpError(400, 'Corpo da requisição não encontrado');
-  }
+    if (!id) {
+      throw new HttpError(400, 'ID do produto não encontrado');
+    }
 
-  const validation = updateProductSchema.safeParse(body);
+    const updated = await db
+      .update(products)
+      .set(body)
+      .where(eq(products.id, id))
+      .returning();
 
-  if (!validation.success) {
-    throw new HttpError(
-      400,
-      'Foram encontrados erros na validação',
-      parseZodError(validation.error),
-    );
-  }
+    if (!updated.length) {
+      throw new HttpError(404, 'Produto não encontrado');
+    }
 
-  if (!id) {
-    throw new HttpError(400, 'ID do produto não encontrado');
-  }
-
-  const updated = await db
-    .update(products)
-    .set({
-      ...validation.data,
-      updated_at: new Date(),
-    })
-    .where(eq(products.id, id))
-    .returning();
-
-  if (!updated.length) {
-    throw new HttpError(404, 'Produto não encontrado');
-  }
-
-  res.status(200).json({
-    message: 'Produto atualizado com sucesso',
-    data: updated.shift(),
-  });
-};
+    res.status(200).json({
+      message: 'Produto atualizado com sucesso',
+      data: updated.shift(),
+    });
+  },
+);

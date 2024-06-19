@@ -57,7 +57,9 @@ export const products = pgTable('products', {
   dz: real('dz').notNull(),
   specifications: jsonb('specifications'),
   created_at: timestamp('created_at').defaultNow(),
-  updated_at: timestamp('updated_at').defaultNow(),
+  updated_at: timestamp('updated_at')
+    .$onUpdate(() => new Date())
+    .defaultNow(),
 });
 
 export const productsToCategories = pgTable(

@@ -39,3 +39,6 @@ export const insertProductSchema = createInsertSchema(products, {
 });
 
 export const updateProductSchema = insertProductSchema.omit({});
+
+export type InsertProductInput = typeof insertProductSchema._input;
+export type UpdateProductInput = typeof updateProductSchema._input;
