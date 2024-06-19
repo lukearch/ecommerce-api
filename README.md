@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://astroneer.dev/" target="blank">
-    <img src=".github/astroneer.svg" width="120" alt="Astroneer Logo" />
+    <img src="https://raw.githubusercontent.com/astroneer-team/astroneer/master/.github/astroneer.svg" width="120" alt="Astroneer Logo" />
   </a>
 </p>
 <h2 align="center">
