@@ -11,7 +11,7 @@ import {
   productsToOrders,
 } from './schemas';
 
-export const customersRelations = relations(customers, ({ many }) => ({
+export const customersRelations = relations(customers, ({ many, one }) => ({
   orders: many(orders),
 }));
 
@@ -33,7 +33,7 @@ export const avaliationsRelations = relations(avaliations, ({ one }) => ({
   }),
 }));
 
-export const addressRelations = relations(addresses, ({ one }) => ({
+export const addressesRelations = relations(addresses, ({ one }) => ({
   order: one(orders, {
     fields: [addresses.order_id],
     references: [orders.id],
@@ -41,11 +41,11 @@ export const addressRelations = relations(addresses, ({ one }) => ({
 }));
 
 export const ordersRelations = relations(orders, ({ one, many }) => ({
+  address: one(addresses),
   customer: one(customers, {
     fields: [orders.customer_id],
     references: [customers.id],
   }),
-  address: one(addresses),
   productsToOrders: many(productsToOrders),
 }));
 

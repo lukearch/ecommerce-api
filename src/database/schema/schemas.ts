@@ -24,9 +24,7 @@ export const customers = pgTable('customers', {
 
 export const addresses = pgTable('addresses', {
   id: uuid('id').defaultRandom().primaryKey(),
-  order_id: uuid('order_id')
-    .notNull()
-    .references(() => orders.id),
+  order_id: uuid('order_id').references(() => orders.id),
   street: text('street').notNull(),
   number: text('number').notNull(),
   neighborhood: text('neighborhood').notNull(),
@@ -65,12 +63,8 @@ export const products = pgTable('products', {
 export const productsToCategories = pgTable(
   'products_to_categories',
   {
-    product_id: uuid('product_id')
-      .notNull()
-      .references(() => products.id),
-    category_id: uuid('category_id')
-      .notNull()
-      .references(() => categories.id),
+    product_id: uuid('product_id').references(() => products.id),
+    category_id: uuid('category_id').references(() => categories.id),
   },
   (t) => ({
     pk: primaryKey({
@@ -82,9 +76,7 @@ export const productsToCategories = pgTable(
 export const avaliations = pgTable('avaliations', {
   id: uuid('id').defaultRandom().primaryKey(),
   customer_name: text('customer_name').notNull(),
-  product_id: uuid('product_id')
-    .notNull()
-    .references(() => products.id),
+  product_id: uuid('product_id').references(() => products.id),
   comment: text('comment'),
   rating: integer('rating').notNull(),
   avatar_url: text('avatar_url').notNull(),
@@ -98,18 +90,14 @@ export const movements = pgTable('movements', {
   id: uuid('id').defaultRandom().primaryKey(),
   quantity: integer('quantity').notNull(),
   type: movementsTypes('type').notNull(),
-  product_id: uuid('product_id')
-    .notNull()
-    .references(() => products.id),
+  product_id: uuid('product_id').references(() => products.id),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').defaultNow(),
 });
 
 export const orders = pgTable('orders', {
   id: uuid('id').defaultRandom().primaryKey(),
-  customer_id: uuid('customer_id')
-    .notNull()
-    .references(() => customers.id),
+  customer_id: uuid('customer_id').references(() => customers.id),
   coupom_id: uuid('coupom_id').references(() => coupoms.id),
   total_cents: real('total_cents').notNull(),
   created_at: timestamp('created_at').defaultNow(),
@@ -119,12 +107,8 @@ export const orders = pgTable('orders', {
 export const productsToOrders = pgTable(
   'products_to_orders',
   {
-    product_id: uuid('product_id')
-      .notNull()
-      .references(() => products.id),
-    order_id: uuid('order_id')
-      .notNull()
-      .references(() => orders.id),
+    product_id: uuid('product_id').references(() => products.id),
+    order_id: uuid('order_id').references(() => orders.id),
     quantity: integer('quantity').notNull(),
   },
   (t) => ({
